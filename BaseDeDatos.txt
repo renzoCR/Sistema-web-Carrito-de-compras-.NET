@@ -1,0 +1,66 @@
+create database dbcarrito;
+use dbcarrito;
+
+create table categoria(
+idCategoria int identity primary  key,
+descripcion varchar(100),
+activo bit default 1,
+fechaRegistro datetime default getdate()
+);
+
+create table marca(
+idMarca int identity primary key,
+descripcion varchar(100),
+activo bit default 1,
+fechaRegistro datetime default getdate()
+);
+create table productos(
+idProducto int identity primary key not null,
+nombre varchar(50) null,
+descripcion varchar(100) null,
+idMarca int null references marca(idMarca),
+idCategoria int null references categoria(idCategoria),
+precio decimal(10,2) null, 
+stock int null,
+rutaImagen varchar(100) null,
+nombreImagen varchar(100) null, 
+activo bit default 1,
+fechaRegistro datetime default getdate()
+)
+
+create table cliente(
+idCliente int primary key identity,
+nombres varchar(100),
+apellidos varchar(100),
+correo varchar(100),
+clave varchar(150),
+reestablecer bit default 0,
+fechaRegistro datetime default getdate());
+
+create table carrito(
+idcarrito int identity primary key,
+idCliente int references cliente(idCliente),
+idProducto int references productos(idProducto),
+cantidad int);
+
+create table venta(
+idVenta int primary key identity,
+idCliente int references cliente(idCliente),
+totalProducto int, 
+montoTotal decimal(10,2),
+contacto varchar(50),
+idDistrito varchar(10),
+telefono varchar(50),
+direccion varchar(500),
+idTransaccion varchar(50),
+fechaVenta datetime default getdate())
+
+create table detalle_venta(
+idDetalleVenta int primary key identity,
+idVenta int references venta(idVenta),
+idProducto int references productos(idProducto),
+cantidad int,
+total decimal(10,2))
+
+
+
